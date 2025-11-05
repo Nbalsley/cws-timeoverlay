@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timestamp Clock Settings</title>
+    <style>
+      body {
+        width: 16rem; /* 256px */
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #1f2937; /* bg-gray-800 */
+        color: #f3f4f6; /* text-gray-100 */
+        overflow: hidden;
+      }
+      main {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      h1 {
+        font-size: 1.125rem; /* text-lg */
+        font-weight: 600;
+        margin: 0;
+        text-align: center;
+      }
+      hr {
+        border: none;
+        height: 1px;
+        background-color: #4b5563; /* bg-gray-600 */
+        width: 100%;
+        margin: 0.25rem 0;
+      }
+      .setting-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+      .setting-row label {
+        font-size: 0.875rem; /* text-sm */
+        font-weight: 500;
+        color: #d1d5db; /* text-gray-300 */
+      }
+      select, input[type="range"], input[type="color"] {
+        background-color: #4b5563;
+        border: 1px solid #6b7280;
+        border-radius: 0.25rem;
+        color: white;
+        padding: 0.25rem;
+      }
+      select {
+        width: 120px;
+      }
+      #font-size-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      input[type="range"] {
+        width: 100px;
+        padding: 0;
+        height: 0.5rem;
+        cursor: pointer;
+      }
+      input[type="color"] {
+        width: 40px;
+        height: 28px;
+        padding: 2px;
+        border: none;
+        cursor: pointer;
+        background: none;
+      }
+      #font-size-value {
+        font-size: 0.875rem;
+        color: #9ca3af;
+        width: 2rem; /* 32px */
+        text-align: right;
+      }
+      .toggle-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .toggle-label {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+      }
+      .toggle-label-text {
+        font-size: 0.875rem; /* text-sm */
+        font-weight: 500;
+        color: #6b7280; /* text-gray-500 */
+        transition: color 0.2s;
+      }
+      .toggle-label-text.active {
+        color: white;
+      }
+      .toggle-switch {
+        width: 2.75rem; /* w-11 */
+        height: 1.5rem;  /* h-6 */
+        background-color: #4b5563; /* bg-gray-600 */
+        border-radius: 9999px;
+        position: relative;
+        transition: background-color 0.2s;
+      }
+      .toggle-switch::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        background-color: white;
+        border-radius: 9999px;
+        width: 1.25rem; /* w-5 */
+        height: 1.25rem; /* h-5 */
+        transition: transform 0.2s;
+      }
+      input[type="checkbox"] {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      input:checked + .toggle-switch {
+        background-color: #0891b2; /* bg-cyan-600 */
+      }
+      input:checked + .toggle-switch::after {
+        transform: translateX(1.25rem);
+      }
+      input:focus + .toggle-switch {
+        box-shadow: 0 0 0 2px #164e63; /* ring-2 ring-cyan-800 */
+      }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+  }
+}
+</script>
+</head>
+<body>
+    <main>
+        <h1>Timestamp Settings</h1>
+        <div class="setting-row">
+            <label>Overlay</label>
+            <div class="toggle-container">
+                <span id="off-label" class="toggle-label-text">Off</span>
+                <label for="toggle" class="toggle-label">
+                    <input type="checkbox" id="toggle" aria-label="Toggle clock visibility" />
+                    <div class="toggle-switch"></div>
+                </label>
+                <span id="on-label" class="toggle-label-text">On</span>
+            </div>
+        </div>
+        <hr/>
+        <div class="setting-row">
+            <label for="position">Position</label>
+            <select id="position">
+                <option value="top-right">Top Right</option>
+                <option value="top-left">Top Left</option>
+                <option value="bottom-right">Bottom Right</option>
+                <option value="bottom-left">Bottom Left</option>
+            </select>
+        </div>
+        <div class="setting-row">
+            <label for="font-size">Font Size</label>
+            <div id="font-size-controls">
+                <input type="range" id="font-size" min="10" max="48" step="1" />
+                <span id="font-size-value">16px</span>
+            </div>
+        </div>
+        <div class="setting-row">
+            <label for="time-color">Time Color</label>
+            <input type="color" id="time-color" />
+        </div>
+        <div class="setting-row">
+            <label for="date-color">Date Color</label>
+            <input type="color" id="date-color" />
+        </div>
+    </main>
+    <script src="popup.js"></script>
+</body>
+</html>

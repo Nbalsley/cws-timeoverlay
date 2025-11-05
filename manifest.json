@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Timestamp Clock",
+  "version": "1.3",
+  "description": "Displays a customizable timestamp overlay on web pages, perfect for screenshots. Click the extension icon to configure.",
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}

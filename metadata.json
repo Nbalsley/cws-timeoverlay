@@ -1,0 +1,5 @@
+{
+  "name": "Timestamp Clock",
+  "description": "A simple and elegant Chrome Extension to display the current date and time, perfect for timestamping screenshots without capturing the entire desktop.",
+  "requestFramePermissions": []
+}
