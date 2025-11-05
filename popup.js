@@ -14,20 +14,24 @@ const DEFAULT_SETTINGS = {
     isVisible: true,
     position: 'top-right',
     fontSize: 16,
-    timeColor: '#67e8f9', // Default cyan
-    dateColor: '#d1d5db'  // Default gray
+    timeColor: '#add8e6', // Default light blue
+    dateColor: '#d3d3d3'  // Default light gray
 };
 
 // --- Functions ---
 
 /**
  * Updates the popup UI to reflect the current settings.
- * @param {object} settings - The settings object.
+ * @param {object} settings - The settings object, which may be incomplete.
  */
 function updateUI(settings) {
+    // Ensure settings are complete by merging with defaults. This prevents errors
+    // if settings from storage are missing properties.
+    const completeSettings = { ...DEFAULT_SETTINGS, ...settings };
+
     // Update toggle and labels
-    toggle.checked = settings.isVisible;
-    if (settings.isVisible) {
+    toggle.checked = completeSettings.isVisible;
+    if (completeSettings.isVisible) {
         onLabel.classList.add('active');
         offLabel.classList.remove('active');
     } else {
@@ -35,12 +39,12 @@ function updateUI(settings) {
         onLabel.classList.remove('active');
     }
 
-    // Update controls
-    positionSelect.value = settings.position;
-    fontSizeSlider.value = settings.fontSize;
-    fontSizeValue.textContent = `${settings.fontSize}px`;
-    timeColorPicker.value = settings.timeColor;
-    dateColorPicker.value = settings.dateColor;
+    // Update controls with guaranteed valid values
+    positionSelect.value = completeSettings.position;
+    fontSizeSlider.value = completeSettings.fontSize;
+    fontSizeValue.textContent = `${completeSettings.fontSize}px`;
+    timeColorPicker.value = completeSettings.timeColor;
+    dateColorPicker.value = completeSettings.dateColor;
 }
 
 /**
@@ -80,8 +84,9 @@ function handleSettingsChange() {
 // Load settings when the popup opens and initialize the UI
 document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.sync.get(SETTINGS_KEY, (data) => {
-        const currentSettings = { ...DEFAULT_SETTINGS, ...data[SETTINGS_KEY] };
-        updateUI(currentSettings);
+        // Pass the saved settings (or an empty object if none exist) to updateUI.
+        // updateUI will handle merging with defaults.
+        updateUI(data[SETTINGS_KEY] || {});
     });
 });
 

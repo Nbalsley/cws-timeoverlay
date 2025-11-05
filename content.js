@@ -5,8 +5,8 @@ const DEFAULT_SETTINGS = {
     isVisible: true,
     position: 'top-right',
     fontSize: 16,
-    timeColor: '#67e8f9',
-    dateColor: '#d1d5db'
+    timeColor: '#add8e6', // Default light blue
+    dateColor: '#d3d3d3'  // Default light gray
 };
 
 let timerId = null;
