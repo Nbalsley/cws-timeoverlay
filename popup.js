@@ -44,7 +44,7 @@ function updateUI(settings) {
 }
 
 /**
- * Saves the current state of the UI controls to chrome storage.
+ * Reads all values from the UI controls and saves them to chrome storage.
  */
 function saveSettings() {
     const newSettings = {
@@ -57,6 +57,24 @@ function saveSettings() {
     chrome.storage.sync.set({ [SETTINGS_KEY]: newSettings });
 }
 
+/**
+ * Handles any change on a control, updates dependent UI, and saves all settings.
+ */
+function handleSettingsChange() {
+    // Update dependent UI elements that don't update automatically
+    fontSizeValue.textContent = `${fontSizeSlider.value}px`;
+    if (toggle.checked) {
+        onLabel.classList.add('active');
+        offLabel.classList.remove('active');
+    } else {
+        offLabel.classList.add('active');
+        onLabel.classList.remove('active');
+    }
+    
+    // Save the new state of all controls
+    saveSettings();
+}
+
 // --- Event Listeners ---
 
 // Load settings when the popup opens and initialize the UI
@@ -67,17 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add listeners to all controls to save settings on change
-toggle.addEventListener('change', saveSettings);
-positionSelect.addEventListener('change', saveSettings);
-fontSizeSlider.addEventListener('input', () => {
-    fontSizeValue.textContent = `${fontSizeSlider.value}px`;
-    saveSettings();
-});
-timeColorPicker.addEventListener('input', saveSettings);
-dateColorPicker.addEventListener('input', saveSettings);
-
-// Also update labels when toggle is changed
-toggle.addEventListener('change', () => {
-    updateUI({ isVisible: toggle.checked });
-});
+// Add a single, robust listener to all controls
+toggle.addEventListener('change', handleSettingsChange);
+positionSelect.addEventListener('change', handleSettingsChange);
+fontSizeSlider.addEventListener('input', handleSettingsChange);
+timeColorPicker.addEventListener('input', handleSettingsChange);
+dateColorPicker.addEventListener('input', handleSettingsChange);
