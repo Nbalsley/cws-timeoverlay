@@ -85,7 +85,7 @@ function handleSettingsChange() {
 document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.sync.get(SETTINGS_KEY, (data) => {
         // Pass the saved settings (or an empty object if none exist) to updateUI.
-        // updateUI will handle merging with defaults.
+        // updateUI will handle merging with defaults, preventing errors.
         updateUI(data[SETTINGS_KEY] || {});
     });
 });
