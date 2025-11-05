@@ -21,6 +21,23 @@ const DEFAULT_SETTINGS = {
 // --- Functions ---
 
 /**
+ * A utility function that delays invoking a function until after `delay` milliseconds
+ * have elapsed since the last time it was invoked.
+ * @param {Function} func The function to debounce.
+ * @param {number} delay The delay in milliseconds.
+ * @returns {Function} The debounced function.
+ */
+function debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+}
+
+/**
  * Updates the popup UI to reflect the current settings.
  * @param {object} settings - The settings object, which may be incomplete.
  */
@@ -61,11 +78,13 @@ function saveSettings() {
     chrome.storage.sync.set({ [SETTINGS_KEY]: newSettings });
 }
 
+// Create a debounced version of saveSettings for controls that fire events rapidly.
+const debouncedSaveSettings = debounce(saveSettings, 200);
+
 /**
- * Handles any change on a control, updates dependent UI, and saves all settings.
+ * Updates the local UI labels that don't update automatically (like the font size text).
  */
-function handleSettingsChange() {
-    // Update dependent UI elements that don't update automatically
+function updateAccessoryUI() {
     fontSizeValue.textContent = `${fontSizeSlider.value}px`;
     if (toggle.checked) {
         onLabel.classList.add('active');
@@ -74,10 +93,8 @@ function handleSettingsChange() {
         offLabel.classList.add('active');
         onLabel.classList.remove('active');
     }
-    
-    // Save the new state of all controls
-    saveSettings();
 }
+
 
 // --- Event Listeners ---
 
@@ -90,9 +107,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add a single, robust listener to all controls
-toggle.addEventListener('change', handleSettingsChange);
-positionSelect.addEventListener('change', handleSettingsChange);
-fontSizeSlider.addEventListener('input', handleSettingsChange);
-timeColorPicker.addEventListener('input', handleSettingsChange);
-dateColorPicker.addEventListener('input', handleSettingsChange);
+// Listeners for single-action controls -> Save immediately
+toggle.addEventListener('change', () => {
+    updateAccessoryUI();
+    saveSettings();
+});
+positionSelect.addEventListener('change', saveSettings);
+
+// Listeners for continuous-action controls -> Update local UI immediately, save with a debounce
+fontSizeSlider.addEventListener('input', () => {
+    updateAccessoryUI();
+    debouncedSaveSettings();
+});
+timeColorPicker.addEventListener('input', debouncedSaveSettings);
+dateColorPicker.addEventListener('input', debouncedSaveSettings);
