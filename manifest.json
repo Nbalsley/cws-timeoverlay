@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Timestamp Clock",
+  "name": "Time & Date Overlay",
   "version": "1.3",
-  "description": "Displays a customizable timestamp overlay on web pages, perfect for screenshots. Click the extension icon to configure.",
+  "description": "Displays a customizable time and date overlay on web pages, perfect for screenshots. Click the extension icon to configure.",
   "permissions": [
     "storage"
   ],

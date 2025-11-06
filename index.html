@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Timestamp Clock Settings</title>
+    <title>Time & Date Overlay Settings</title>
     <style>
       body {
         width: 16rem; /* 256px */
@@ -136,7 +136,7 @@
 </head>
 <body>
     <main>
-        <h1>Timestamp Settings</h1>
+        <h1>Time & Date Settings</h1>
         <div class="setting-row">
             <label>Overlay</label>
             <div class="toggle-container">
@@ -157,6 +157,13 @@
                 <option value="bottom-right">Bottom Right</option>
                 <option value="bottom-left">Bottom Left</option>
             </select>
+        </div>
+        <div class="setting-row">
+            <label for="show-seconds">Show Seconds</label>
+            <label class="toggle-label">
+                <input type="checkbox" id="show-seconds" aria-label="Toggle seconds visibility" />
+                <div class="toggle-switch"></div>
+            </label>
         </div>
         <div class="setting-row">
             <label for="font-size">Font Size</label>

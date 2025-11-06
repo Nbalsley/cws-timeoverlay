@@ -1,5 +1,5 @@
 {
-  "name": "Timestamp Clock",
-  "description": "A simple and elegant Chrome Extension to display the current date and time, perfect for timestamping screenshots without capturing the entire desktop.",
+  "name": "Time & Date Overlay",
+  "description": "A simple and elegant Chrome Extension to display the current date and time, perfect for timestamping screenshots without capturing the entire desktop. Includes an option to hide seconds.",
   "requestFramePermissions": []
 }

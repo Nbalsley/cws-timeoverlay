@@ -3,6 +3,7 @@ const toggle = document.getElementById('toggle');
 const onLabel = document.getElementById('on-label');
 const offLabel = document.getElementById('off-label');
 const positionSelect = document.getElementById('position');
+const showSecondsToggle = document.getElementById('show-seconds');
 const fontSizeSlider = document.getElementById('font-size');
 const fontSizeValue = document.getElementById('font-size-value');
 const timeColorPicker = document.getElementById('time-color');
@@ -15,7 +16,8 @@ const DEFAULT_SETTINGS = {
     position: 'top-right',
     fontSize: 16,
     timeColor: '#add8e6', // Default light blue
-    dateColor: '#d3d3d3'  // Default light gray
+    dateColor: '#d3d3d3',  // Default light gray
+    showSeconds: true
 };
 
 // --- Functions ---
@@ -58,6 +60,7 @@ function updateUI(settings) {
 
     // Update controls with guaranteed valid values
     positionSelect.value = completeSettings.position;
+    showSecondsToggle.checked = completeSettings.showSeconds;
     fontSizeSlider.value = completeSettings.fontSize;
     fontSizeValue.textContent = `${completeSettings.fontSize}px`;
     timeColorPicker.value = completeSettings.timeColor;
@@ -73,7 +76,8 @@ function saveSettings() {
         position: positionSelect.value,
         fontSize: parseInt(fontSizeSlider.value, 10),
         timeColor: timeColorPicker.value,
-        dateColor: dateColorPicker.value
+        dateColor: dateColorPicker.value,
+        showSeconds: showSecondsToggle.checked
     };
     chrome.storage.sync.set({ [SETTINGS_KEY]: newSettings });
 }
@@ -113,6 +117,7 @@ toggle.addEventListener('change', () => {
     saveSettings();
 });
 positionSelect.addEventListener('change', saveSettings);
+showSecondsToggle.addEventListener('change', saveSettings);
 
 // Listeners for continuous-action controls -> Update local UI immediately, save with a debounce
 fontSizeSlider.addEventListener('input', () => {

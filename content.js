@@ -6,7 +6,8 @@ const DEFAULT_SETTINGS = {
     position: 'top-right',
     fontSize: 16,
     timeColor: '#add8e6', // Default light blue
-    dateColor: '#d3d3d3'  // Default light gray
+    dateColor: '#d3d3d3',  // Default light gray
+    showSeconds: true
 };
 
 let timerId = null;
@@ -14,13 +15,17 @@ let currentSettings = DEFAULT_SETTINGS;
 
 // --- Functions ---
 
-function formatDateTime(date) {
+function formatDateTime(date, settings) {
     const timeOptions = {
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit',
         hour12: true,
     };
+    
+    if (settings.showSeconds) {
+        timeOptions.second = '2-digit';
+    }
+
     const dateOptions = {
         month: 'short',
         day: 'numeric',
@@ -103,7 +108,7 @@ function createOrUpdateOverlay(settings) {
     applyStyles(overlay, settings);
 
     function updateContent() {
-        const { formattedTime, formattedDate } = formatDateTime(new Date());
+        const { formattedTime, formattedDate } = formatDateTime(new Date(), currentSettings);
         const timeEl = overlay.querySelector(`#${OVERLAY_ID}-time`);
         const dateEl = overlay.querySelector(`#${OVERLAY_ID}-date`);
         if (timeEl) timeEl.textContent = formattedTime;
